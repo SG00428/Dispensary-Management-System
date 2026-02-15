@@ -18,7 +18,6 @@
 - [Sample Queries](#sample-queries)
 - [Team Members](#team-members)
 - [Setup Instructions](#setup-instructions)
-- [Future Enhancements](#future-enhancements)
 
 ---
 
@@ -55,12 +54,12 @@ Educational institutions and workplace campuses face significant healthcare mana
 
 A centralized, digital Dispensary Management System that:
 
-- ✅ Maintains complete patient health histories with mandatory allergy tracking
-- ✅ Enables instant emergency response with one-click access to critical data
-- ✅ Provides intelligent inventory management with automated reorder alerts
-- ✅ Integrates appointments with doctor schedules and patient records
-- ✅ Ensures medication safety through prescription validation
-- ✅ Supports comprehensive audit trails for accountability
+-  Maintains complete patient health histories with mandatory allergy tracking
+-  Enables instant emergency response with one-click access to critical data
+-  Provides intelligent inventory management with automated reorder alerts
+-  Integrates appointments with doctor schedules and patient records
+-  Ensures medication safety through prescription validation
+-  Supports comprehensive audit trails for accountability
 
 ---
 
@@ -519,26 +518,21 @@ Access Prescription via: Visit → Prescription
 | Underlined | Primary Key |
 | Arrow | Foreign Key with cardinality |
 
-### Component-Wise ER Diagrams
-
-#### 1. Core Entities ER
-![Core Entities ER](diagrams/er_core_entities.png)
+#### 1. Core Entities
 
 **Key Attributes**:
 - Member: <u>MemberID</u>, Name, Age, Email, ContactNumber (NOT NULL), BloodGroup (NOT NULL), EmergencyContact (NOT NULL)
 - Doctor: <u>DoctorID</u>, Name, Specialization, LicenseNumber (UNIQUE), AvailableFrom, AvailableTo
 - Medicine: <u>MedicineID</u>, Name, GenericName, UnitPrice (NO stock/expiry here!)
 
-#### 2. Health Records & Visit ER
-![Health Visit ER](diagrams/er_health_visit.png)
+#### 2. Health Records & Visit
 
 **Cardinality Examples**:
 - Member (1) ──< Appointment (N): One member, many appointments
 - Doctor (1) ──< Appointment (N): One doctor, many appointments
 - Visit (1) → Appointment (0..1): Visit may or may not link to appointment
 
-#### 3. Prescription Workflow ER (Normalized)
-![Prescription ER](diagrams/er_prescription.png)
+#### 3. Prescription Workflow
 
 **Normalized Structure**:
 ```
@@ -560,8 +554,7 @@ Visit (1) ──< Prescription (0..1)
 - PrescriptionItem.MedicineID → Medicine (RESTRICT)
 - MedicineDispense.InventoryID → Inventory (RESTRICT)
 
-#### 4. Inventory Management ER
-![Inventory ER](diagrams/er_inventory.png)
+#### 4. Inventory Management
 
 **Key Relationship**:
 ```
@@ -576,8 +569,7 @@ Medicine (1) ──< Inventory (N) ──> MedicalSupplier (1)
 - ReorderLevel, MinimumStock
 - Location (storage location)
 
-#### 5. Emergency & Billing ER
-![Emergency Billing ER](diagrams/er_emergency_billing.png)
+#### 5. Emergency & Billing
 
 **Emergency Relationships**:
 - EmergencyCase → Member (many-to-one)
@@ -596,10 +588,10 @@ Medicine (1) ──< Inventory (N) ──> MedicalSupplier (1)
 ### 1. Medicine vs Inventory Separation
 
 **Benefits**:
-- ✅ Multiple batches per medicine
-- ✅ Different expiry dates tracked
-- ✅ FEFO (First Expiry First Out) dispensing possible
-- ✅ Batch-level supplier tracking
+-  Multiple batches per medicine
+-  Different expiry dates tracked
+-  FEFO (First Expiry First Out) dispensing possible
+-  Batch-level supplier tracking
 
 ---
 
@@ -821,12 +813,13 @@ WHERE a.Status = 'No-Show'
 
 ## Team Members
 
-| Name | Roll Number | Email | Primary Responsibilities |
-|------|-------------|-------|-------------------------|
-| [Member 1] | [Roll No 1] | [email1@iitgn.ac.in] | Requirement analysis, Core entities design, UML diagrams |
-| [Member 2] | [Roll No 2] | [email2@iitgn.ac.in] | Appointment/Visit/Prescription workflows, Normalization |
-| [Member 3] | [Roll No 3] | [email3@iitgn.ac.in] | Inventory/Emergency/Billing design, SQL triggers |
-| [Member 4] | [Roll No 4] | [email4@iitgn.ac.in] | Normalization analysis, Sample data, Documentation |
+| Name |
+|------|
+| Shreyas Dharmatti |
+| Anushika Mishra |
+| Harsh Jain |
+| Kandarp Jani |
+| Sneha Gautam | 
 
 ---
 
@@ -875,24 +868,6 @@ WHERE constraint_schema = 'dispensary_db'
 AND referenced_table_name IS NOT NULL;
 -- Expected: 25+ relationships
 ```
-
-### Sample Data Overview
-
-The system includes sample data for:
-- 50+ Members (students, faculty, staff)
-- 10+ Doctors (various specializations)
-- 20+ Staff Employees
-- 100+ Medicines
-- 30+ Medical Suppliers
-- 200+ Inventory batches
-- 150+ Appointments
-- 100+ Visits
-- 80+ Prescriptions (with 200+ items)
-- 150+ Medicine dispensing records
-- 20+ Emergency cases
-- 100+ Bill payments
-
----
 
 ## References
 
