@@ -2,14 +2,9 @@
 
 ## CS 432 - Databases | Assignment 1 | Track 1
 
-**Indian Institute of Technology, Gandhinagar**  
-**Semester II (2025-2026)**  
-**Instructor:** Dr. Yogesh K. Meena  
-**Submission Date:** February 15, 2026
-
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Problem Statement](#problem-statement)
@@ -27,7 +22,7 @@
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 The **Dispensary Management System** is a comprehensive database-driven application designed to modernize healthcare delivery in educational institutions and workplace campuses. The system addresses critical challenges including incomplete medical records, delayed emergency response, poor inventory management, and untracked allergies.
 
@@ -43,7 +38,7 @@ The **Dispensary Management System** is a comprehensive database-driven applicat
 
 ---
 
-## 🚨 Problem Statement
+## Problem Statement
 
 ### Current Challenges
 
@@ -69,7 +64,7 @@ A centralized, digital Dispensary Management System that:
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Component Overview
 
@@ -100,13 +95,12 @@ A centralized, digital Dispensary Management System that:
 
 - **Database**: MySQL 8.0
 - **Modeling Tools**: Draw.io (UML & ER diagrams)
-- **SQL Client**: MySQL Workbench, DBeaver
 - **Documentation**: LaTeX, Markdown
 - **Version Control**: Git, GitHub
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### Overview: 14 Tables
 
@@ -153,7 +147,7 @@ Medicine (1) ──< Inventory (N) ──> MedicalSupplier (1) ─────�
 
 ---
 
-## 🔑 Core Functionalities
+## Core Functionalities
 
 ### 1. Member Registration & Health Records Management
 
@@ -361,18 +355,18 @@ ORDER BY i.ExpiryDate ASC;
 
 ---
 
-## 📊 Normalization
+##  Normalization
 
 ### Normalization to Third Normal Form (3NF)
 
-#### First Normal Form (1NF) ✅
+#### First Normal Form (1NF)
 
 **Requirement**: No repeating groups, atomic values
 
 **Compliance**:
-- ✅ No multi-valued attributes
-- ✅ All attributes contain atomic values
-- ✅ No repeating groups (Medicine1, Medicine2, etc.)
+-  No multi-valued attributes
+-  All attributes contain atomic values
+-  No repeating groups (Medicine1, Medicine2, etc.)
 
 **Example**:
 ```
@@ -387,16 +381,16 @@ PrescriptionItemID | PrescriptionID | MedicineID
 1003               | 101            | 425 (Cough Syrup)
 ```
 
-#### Second Normal Form (2NF) ✅
+#### Second Normal Form (2NF) 
 
 **Requirement**: No partial dependencies (all non-key attributes fully dependent on PK)
 
 **Compliance**:
-- ✅ All tables use single-column primary keys
-- ✅ No composite keys causing partial dependencies
-- ✅ All attributes depend on entire primary key
+-  All tables use single-column primary keys
+-  No composite keys causing partial dependencies
+-  All attributes depend on entire primary key
 
-#### Third Normal Form (3NF) ✅
+#### Third Normal Form (3NF) 
 
 **Requirement**: No transitive dependencies
 
@@ -441,7 +435,7 @@ Access Prescription via: Visit → Prescription
 
 ---
 
-## 🎨 UML Diagrams
+## UML Diagrams
 
 ### Complete System UML
 
@@ -507,7 +501,7 @@ Access Prescription via: Visit → Prescription
 
 ---
 
-## 🗺️ ER Diagrams
+## ER Diagrams
 
 ### Complete System ER
 
@@ -597,48 +591,9 @@ Medicine (1) ──< Inventory (N) ──> MedicalSupplier (1)
 
 ---
 
-## 🔍 Key Design Decisions
+## Key Design Decisions
 
-### 1. Medicine vs Inventory Separation ⭐
-
-**Problem**: Where to store stock quantity and expiry date?
-
-**Wrong Approach**:
-```sql
-CREATE TABLE Medicine (
-    MedicineID INT PRIMARY KEY,
-    Name VARCHAR(200),
-    Quantity INT,        -- ❌ WRONG: Batch-specific
-    ExpiryDate DATE      -- ❌ WRONG: Batch-specific
-);
-```
-
-**Issues**:
-- Can only track one batch per medicine
-- Cannot handle multiple batches with different expiry dates
-- Violates 3NF (transitive dependency)
-
-**Correct Approach**:
-```sql
-CREATE TABLE Medicine (
-    MedicineID INT PRIMARY KEY,
-    Name VARCHAR(200),
-    UnitPrice DECIMAL(10,2)
-    -- NO stock or expiry data
-);
-
-CREATE TABLE Inventory (
-    InventoryID INT PRIMARY KEY,
-    MedicineID INT,
-    BatchNumber VARCHAR(50),
-    Quantity INT,              -- ✅ Batch-specific
-    ExpiryDate DATE,           -- ✅ Batch-specific
-    ReorderLevel INT,          -- ✅ Batch-specific
-    SupplierID INT,
-    FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID),
-    UNIQUE (MedicineID, BatchNumber)
-);
-```
+### 1. Medicine vs Inventory Separation
 
 **Benefits**:
 - ✅ Multiple batches per medicine
@@ -648,49 +603,13 @@ CREATE TABLE Inventory (
 
 ---
 
-### 2. Prescription → PrescriptionItem Normalization ⭐
-
-**Problem**: How to store multiple medicines in one prescription?
-
-**Wrong Approach**:
-```sql
-CREATE TABLE Prescription (
-    PrescriptionID INT PRIMARY KEY,
-    MedicineName VARCHAR(200),  -- ❌ Only ONE medicine
-    Dosage VARCHAR(100)
-);
-```
-
-**Issues**:
-- Limited to one medicine per prescription
-- Real-world prescriptions have 2-5 medicines
-- Violates 1NF if we try to store comma-separated values
-
-**Correct Approach**:
-```sql
-CREATE TABLE Prescription (
-    PrescriptionID INT PRIMARY KEY,
-    VisitID INT,
-    Diagnosis TEXT
-);
-
-CREATE TABLE PrescriptionItem (
-    PrescriptionItemID INT PRIMARY KEY,
-    PrescriptionID INT,
-    MedicineID INT,
-    Dosage VARCHAR(100),
-    Frequency VARCHAR(100),
-    Duration VARCHAR(100),
-    Quantity INT,
-    FOREIGN KEY (PrescriptionID) REFERENCES Prescription(PrescriptionID) ON DELETE CASCADE
-);
-```
+### 2. Prescription → PrescriptionItem Normalization
 
 **Benefits**:
-- ✅ Unlimited medicines per prescription
-- ✅ Each medicine has own dosage/frequency
-- ✅ Properly normalized (1NF compliant)
-- ✅ Easy to query specific medicines
+-  Unlimited medicines per prescription
+-  Each medicine has own dosage/frequency
+-  Properly normalized (1NF compliant)
+-  Easy to query specific medicines
 
 **Real-World Example**:
 ```
@@ -702,11 +621,8 @@ Prescription #501: "Throat Infection"
 
 ---
 
-### 3. Prescription vs Dispensing Separation ⭐
+### 3. Prescription vs Dispensing Separation
 
-**Problem**: Is prescription the same as dispensing?
-
-**Answer**: NO! They are separate events.
 
 **Why Separate?**
 1. **Timing**: Prescription written at 10 AM, dispensing at 11 AM
@@ -716,72 +632,10 @@ Prescription #501: "Throat Infection"
 5. **Staff Attribution**: Different staff (doctor prescribes, pharmacist dispenses)
 6. **Audit Trail**: Complete history of what was actually given
 
-**Implementation**:
-```sql
-CREATE TABLE PrescriptionItem (
-    PrescriptionItemID INT PRIMARY KEY,
-    PrescriptionID INT,
-    MedicineID INT,
-    Quantity INT  -- Prescribed quantity
-);
-
-CREATE TABLE MedicineDispense (
-    DispenseID INT PRIMARY KEY,
-    PrescriptionID INT,
-    PrescriptionItemID INT,
-    MedicineID INT,
-    InventoryID INT,           -- Which batch?
-    QuantityDispensed INT,     -- Actually dispensed (may differ)
-    DispensedBy INT,           -- Which pharmacist?
-    DispenseDate DATE,
-    BatchNumber VARCHAR(50),   -- For traceability
-    UnitPrice DECIMAL(10,2),   -- Price at dispensing time
-    TotalPrice DECIMAL(10,2),
-    FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID)
-);
-```
-
-**Scenario**:
-```
-PrescriptionItem: Paracetamol, Quantity: 20 tablets
-
-MedicineDispense:
-- DispenseID: 2001
-- InventoryID: 5001 (Batch PAR-2024-001)
-- QuantityDispensed: 20
-- DispensedBy: Employee #305 (Pharmacist Sarah)
-- UnitPrice: ₹2.00
-- TotalPrice: ₹40.00
-
-Result: Inventory Batch 5001 quantity reduced by 20
-```
 
 ---
 
 ### 4. BillPayment Foreign Key Simplification
-
-**Problem**: How many foreign keys should BillPayment have?
-
-**Redundant Approach**:
-```sql
-CREATE TABLE BillPayment (
-    BillID INT PRIMARY KEY,
-    VisitID INT,
-    MemberID INT,           -- ❌ Redundant (accessible via Visit)
-    PrescriptionID INT,     -- ❌ Redundant (accessible via Visit)
-    TotalAmount DECIMAL(10,2)
-);
-```
-
-**Optimized Approach**:
-```sql
-CREATE TABLE BillPayment (
-    BillID INT PRIMARY KEY,
-    VisitID INT,            -- ✅ Only FK needed
-    TotalAmount DECIMAL(10,2),
-    FOREIGN KEY (VisitID) REFERENCES Visit(VisitID) ON DELETE CASCADE
-);
-```
 
 **Why?**
 - MemberID accessible via: `Visit.MemberID`
@@ -800,25 +654,9 @@ CREATE TABLE BillPayment (
 - Cannot afford JOIN latency in life-threatening situations
 - Blood group and emergency contact must be instantly available
 
-**Query Optimization**:
-```sql
--- This query MUST execute in < 1 second
-SELECT 
-    m.Name, m.BloodGroup, m.EmergencyContact,
-    mh.KnownAllergies, mh.ChronicConditions
-FROM Member m
-LEFT JOIN MedicalHistory mh ON m.MemberID = mh.MemberID
-WHERE m.MemberID = ?;
-```
-
-**Future Enhancement** (Assignment 2):
-- B+ Tree index on Member.MemberID
-- Hash index on MedicalHistory.MemberID
-- In-memory caching for frequent emergency patients
-
 ---
 
-## 📝 Sample Queries
+## Sample Queries
 
 ### Patient Lookup Queries
 
@@ -981,7 +819,7 @@ WHERE a.Status = 'No-Show'
 
 ---
 
-## 👥 Team Members
+## Team Members
 
 | Name | Roll Number | Email | Primary Responsibilities |
 |------|-------------|-------|-------------------------|
@@ -990,25 +828,9 @@ WHERE a.Status = 'No-Show'
 | [Member 3] | [Roll No 3] | [email3@iitgn.ac.in] | Inventory/Emergency/Billing design, SQL triggers |
 | [Member 4] | [Roll No 4] | [email4@iitgn.ac.in] | Normalization analysis, Sample data, Documentation |
 
-### Contribution Summary
-
-**Collaborative Efforts**:
-- Weekly design review meetings
-- Joint UML and ER diagram refinement
-- Peer review of SQL implementations
-- Comprehensive functionality testing
-- Report compilation and formatting
-
-**Tools Used**:
-- Draw.io for UML/ER diagrams
-- MySQL Workbench for SQL development
-- GitHub for version control
-- Google Meet for remote collaboration
-- LaTeX/Markdown for documentation
-
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -1072,106 +894,11 @@ The system includes sample data for:
 
 ---
 
-## 🔮 Future Enhancements
-
-### Assignment 2: B+ Tree Indexing
-
-**Planned Indexes**:
-- B+ Tree on `Member.MemberID` (fast patient lookup)
-- B+ Tree on `Appointment.AppointmentDate` (schedule queries)
-- B+ Tree on `MedicineDispense.DispenseDate` (usage analytics)
-- B+ Tree on `Inventory.ExpiryDate` (expiry monitoring)
-
-**Expected Performance Gains**:
-- Patient lookup: O(log n) vs O(n)
-- Appointment queries: Range queries in O(log n + k)
-- Report generation: 10-100x faster
-
-### Assignment 3: ACID Testing
-
-**Test Scenarios**:
-1. **Atomicity**: Medicine dispensing with stock update (rollback on failure)
-2. **Consistency**: Concurrent appointment booking (prevent double-booking)
-3. **Isolation**: Multiple pharmacists dispensing simultaneously
-4. **Durability**: Emergency case data persistence after system crash
-
-**Concurrency Issues to Solve**:
-- Lost updates in inventory
-- Phantom reads in appointment scheduling
-- Dirty reads in billing
-
-### Assignment 4: Sharding
-
-**Sharding Strategies**:
-1. **By Department**: Shard members by academic department (CS, EE, ME, etc.)
-2. **By Date Range**: Historical data (old visits/prescriptions) on cold storage shard
-3. **By Supplier**: Inventory distributed across supplier-specific shards
-4. **Hybrid**: Hot data (recent visits) on fast SSD shard, cold data on HDD shard
-
-**Query Routing**:
-- Transparent shard routing for single-shard queries
-- MapReduce for cross-shard analytics
-
-### Beyond Course Scope
-
-1. **Web/Mobile Application**
-   - React frontend for appointment booking
-   - Mobile app for patients (view prescriptions, book appointments)
-   - Admin dashboard for doctors and staff
-
-2. **Advanced Features**
-   - SMS/Email notifications for appointments
-   - Telemedicine integration (video consultations)
-   - AI-powered diagnosis assistance
-   - Predictive analytics for disease outbreak detection
-
-3. **Integration & Compliance**
-   - Hospital EHR system integration for referrals
-   - Insurance claim processing
-   - HIPAA/GDPR compliance for data privacy
-   - Blockchain for tamper-proof medical records
-
-4. **Analytics & Reporting**
-   - Real-time dashboards (Grafana/Tableau)
-   - Medicine usage forecasting (ML models)
-   - Patient health trend analysis
-   - Cost optimization recommendations
-
----
-
-## 📚 References
+## References
 
 1. Ramez Elmasri and Shamkant B. Navathe, *Fundamentals of Database Systems*, 7th Edition, Pearson, 2015
 2. Abraham Silberschatz, Henry F. Korth, and S. Sudarshan, *Database System Concepts*, 7th Edition, McGraw-Hill, 2019
 3. MySQL 8.0 Reference Manual, https://dev.mysql.com/doc/refman/8.0/
 4. CS 432 Course Lecture Notes, Dr. Yogesh K. Meena, IIT Gandhinagar
 
----
 
-## 📄 License
-
-This project is developed as part of the CS 432 course at IIT Gandhinagar. All rights reserved.
-
----
-
-## 📧 Contact
-
-For questions or issues, please contact:
-- **Instructor**: Dr. Yogesh K. Meena (yogesh.meena@iitgn.ac.in)
-- **Team Lead**: [Your Email]
-
----
-
-## 🎓 Acknowledgments
-
-Special thanks to:
-- Dr. Yogesh K. Meena for guidance and feedback
-- IIT Gandhinagar Computer Science Department
-- Course TAs for technical support
-- All team members for collaborative effort
-
----
-
-**Last Updated**: February 15, 2026  
-**Version**: 1.0  
-**Status**: Assignment 1 Complete ✅
