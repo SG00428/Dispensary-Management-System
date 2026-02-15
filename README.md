@@ -436,67 +436,174 @@ Access Prescription via: Visit → Prescription
 
 ## UML Diagrams
 
-### Complete System UML
+UML class diagrams were created to represent the conceptual structure of the database system.
 
-![Complete UML Diagram](diagrams/uml_complete_system.png)
+Each class corresponds to a database table and includes:
+- Key attributes
+- Relationships
+- Multiplicity constraints
 
-*Full system UML class diagram showing all 14 entities with attributes, methods, and relationships.*
+Multiplicity notation used:
 
-### Component-Wise UML Diagrams
+- **1** → exactly one  
+- **M** → many  
+- **0..1** → optional (zero or one)
 
-#### 1. Core Master Entities
-![Core Entities UML](diagrams/uml_core_entities.png)
+---
 
-**Classes**: Member, Doctor, StaffEmployee, Medicine, MedicalSupplier
+# Core Patient and Visit Flow
 
-**Key Relationships**:
-- Independent master entities (no strong dependencies)
-- Will link to other modules through foreign keys
+This diagram represents the primary workflow of the dispensary system, including:
 
-#### 2. Appointment & Visit Workflow
-![Appointment UML](diagrams/uml_appointment_visit.png)
+- Member registration
+- Appointment booking
+- Visit tracking
+- Prescription generation
+- Billing
 
-**Key Relationships**:
-- Member (1) ──< Appointment (N)
-- Doctor (1) ──< Appointment (N)
-- Appointment (0..1) ──< Visit (1)
-- Member (1) ──< MedicalHistory (0..1)
+<img width="1284" height="894" alt="image" src="https://github.com/user-attachments/assets/c481c53a-d160-4f71-834c-d05fac84f9f9" />
 
-**Multiplicity Notes**:
-- `0..1` on Appointment → Visit: Walk-ins have no appointment
-- `0..1` on MedicalHistory: Created during first visit
 
-#### 3. Prescription & Dispensing Workflow
-![Prescription UML](diagrams/uml_prescription_dispensing.png)
+---
 
-**Critical Composition Relationship**:
-- Prescription (1) ◆──< PrescriptionItem (1..*)
-  - Filled diamond (◆) indicates composition
-  - PrescriptionItem cannot exist without Prescription
-  - CASCADE delete enforced
+## Relationships and Multiplicity
 
-**Separation of Concerns**:
-- Prescription: Header (diagnosis, validity)
-- PrescriptionItem: Individual medicines
-- MedicineDispense: Actual dispensing records
+### Member & Appointment
+- **Member (1) — (M) Appointment**  
+  A member can book multiple appointments.  
+  Each appointment belongs to exactly one member.
 
-#### 4. Inventory Management
-![Inventory UML](diagrams/uml_inventory.png)
+### Doctor & Appointment
+- **Doctor (1) — (M) Appointment**  
+  A doctor can attend multiple appointments.
 
-**Aggregation Relationship**:
-- Medicine (1) ◇──< Inventory (0..*)
-  - Hollow diamond (◇) indicates aggregation
-  - Inventory can be depleted, Medicine catalog remains
-  - RESTRICT delete enforced
+### Appointment & Visit
+- **Appointment (1) — (0..1) Visit**  
+  Each appointment may result in at most one visit.  
+  A visit can also occur without an appointment (walk-in).
 
-#### 5. Emergency Response
-![Emergency UML](diagrams/uml_emergency.png)
+### Member & Visit
+- **Member (1) — (M) Visit**  
+  A member can have multiple visits over time.
 
-**Key Associations**:
-- EmergencyCase → Member: Patient identification
-- EmergencyCase → MedicalHistory: Instant allergy access
-- EmergencyCase → Doctor: Handling physician
-- EmergencyCase → StaffEmployee: First responder
+### Doctor & Visit
+- **Doctor (1) — (M) Visit**  
+  A doctor can conduct multiple visits.
+
+### Visit & Prescription
+- **Visit (1) — (M) Prescription**  
+  Each visit may generate multiple prescriptions.
+
+### Member & Prescription
+- **Member (1) — (M) Prescription**  
+  A member may receive multiple prescriptions over time.
+
+### Doctor & Prescription
+- **Doctor (1) — (M) Prescription**  
+  A doctor can issue multiple prescriptions.
+
+### Prescription & PrescriptionItem
+- **Prescription (1) — (M) PrescriptionItem**  
+  Each prescription contains multiple medicine items.
+
+### Medicine & PrescriptionItem
+- **Medicine (1) — (M) PrescriptionItem**  
+  Each medicine can appear in multiple prescription items.
+
+### Visit & BillPayment
+- **Visit (1) — (1) BillPayment**  
+  Each visit generates exactly one bill.
+
+### StaffEmployee & BillPayment
+- **StaffEmployee (1) — (M) BillPayment**  
+  A staff member can generate multiple bills.
+
+---
+
+# Inventory and Medicine Flow
+
+This diagram represents:
+
+- Medicine master catalog
+- Batch-wise inventory storage
+- Supplier relationships
+- Actual medicine dispensing workflow
+
+<img width="1140" height="686" alt="image" src="https://github.com/user-attachments/assets/0d5267e7-1ec4-4d2a-bf65-62b2658f0c4f" />
+
+
+---
+
+## Relationships and Multiplicity
+
+### Medicine & Inventory
+- **Medicine (1) — (M) Inventory**  
+  A medicine can exist in multiple inventory batches.
+
+### MedicalSupplier & Inventory
+- **MedicalSupplier (1) — (M) Inventory**  
+  A supplier can provide multiple inventory batches.
+
+### PrescriptionItem & MedicineDispense
+- **PrescriptionItem (1) — (M) MedicineDispense**  
+  A prescription item may be dispensed in multiple batches.
+
+### Inventory & MedicineDispense
+- **Inventory (1) — (M) MedicineDispense**  
+  An inventory batch can be used in multiple dispensing records.
+
+### StaffEmployee & MedicineDispense
+- **StaffEmployee (1) — (M) MedicineDispense**  
+  A staff member can dispense medicines multiple times.
+
+---
+
+# Emergency Case Flow
+
+This diagram models emergency case management and its integration with:
+
+- Members
+- Doctors
+- Visits
+
+<img width="1106" height="598" alt="image" src="https://github.com/user-attachments/assets/d14b6f4c-7287-46fa-8e70-c1534ef1ad7e" />
+
+
+---
+
+## Relationships and Multiplicity
+
+### Member & EmergencyCase
+- **Member (1) — (M) EmergencyCase**  
+  A member can have multiple emergency cases.
+
+### Doctor & EmergencyCase
+- **Doctor (1) — (M) EmergencyCase**  
+  A doctor can handle multiple emergency cases.
+
+### Visit & EmergencyCase
+- **Visit (1) — (0..1) EmergencyCase**  
+  An emergency case may be associated with a visit.  
+  However, not all visits are emergency cases.
+
+---
+
+The UML diagrams collectively represent:
+
+- Core clinical workflow  
+- Inventory management and supplier tracking  
+- Emergency response integration  
+
+Each UML class directly maps to a database table in Module A.  
+Multiplicity constraints are enforced in the relational schema using:
+
+- Primary Keys  
+- Foreign Keys  
+- NOT NULL constraints  
+- CASCADE and RESTRICT rules  
+
+These diagrams form the conceptual foundation for the ER model and relational schema implementation.
+
 
 ---
 
@@ -504,82 +611,259 @@ Access Prescription via: Visit → Prescription
 
 ### Complete System ER
 
-![Complete ER Diagram](diagrams/er_complete_system.png)
+<img width="2785" height="2311" alt="Er drawio" src="https://github.com/user-attachments/assets/541b3879-f8b7-4ac1-8756-fe760a53ac2d" />
 
-*Full database ER diagram showing all entities, attributes, primary keys (underlined), foreign keys, and cardinality.*
 
-### ER Notation Used
+> **Note:** The complete ER diagram is uploaded in the file section.
 
-| Symbol | Meaning |
-|--------|---------|
-| Rectangle | Entity (table) |
-| Diamond | Relationship |
-| Oval | Attribute (column) |
-| Underlined | Primary Key |
-| Arrow | Foreign Key with cardinality |
+---
 
-#### 1. Core Entities
+### ER Notation Guide
 
-**Key Attributes**:
-- Member: <u>MemberID</u>, Name, Age, Email, ContactNumber (NOT NULL), BloodGroup (NOT NULL), EmergencyContact (NOT NULL)
-- Doctor: <u>DoctorID</u>, Name, Specialization, LicenseNumber (UNIQUE), AvailableFrom, AvailableTo
-- Medicine: <u>MedicineID</u>, Name, GenericName, UnitPrice (NO stock/expiry here!)
+| Symbol | Meaning | Example |
+|--------|---------|---------|
+| **Rectangle** | Entity (database table) | Member, Doctor, Visit |
+| **Diamond** | Relationship between entities | BOOKS, ATTENDS, GENERATES |
+| **Oval** | Attribute (column) | Name, Age, Email |
+| **Underlined** | Primary Key | <u>MemberID</u>, <u>DoctorID</u> |
+| **(PK)** | Primary Key annotation | MemberID (PK) |
+| **(FK)** | Foreign Key annotation | Appointment.MemberID (FK) |
+| **(U)** | Unique constraint | Doctor.LicenseNumber (U) |
+| **1, M, 0..1** | Cardinality notation | 1 = exactly one, M = many, 0..1 = optional |
 
-#### 2. Health Records & Visit
+---
 
-**Cardinality Examples**:
-- Member (1) ──< Appointment (N): One member, many appointments
-- Doctor (1) ──< Appointment (N): One doctor, many appointments
-- Visit (1) → Appointment (0..1): Visit may or may not link to appointment
+### Complete Entity List (14 Tables)
 
-#### 3. Prescription Workflow
+| # | Entity | Primary Key | Purpose |
+|---|--------|-------------|---------|
+| 1 | **Member** | MemberID (PK) | Central patient registry (students, faculty, staff) |
+| 2 | **Doctor** | DoctorID (PK) | Medical professional information with schedules |
+| 3 | **StaffEmployee** | EmployeeID (PK) | Nurses, pharmacists, administrative staff |
+| 4 | **Medicine** | MedicineID (PK) | Medicine catalog (NO stock/expiry - normalized!) |
+| 5 | **MedicalSupplier** | SupplierID (PK) | Vendor management for procurement |
+| 6 | **MedicalHistory** | HistoryID (PK) | Patient health records with allergies |
+| 7 | **Appointment** | AppointmentID (PK) | Appointment scheduling |
+| 8 | **Visit** | VisitID (PK) | Every dispensary visit (walk-in or scheduled) |
+| 9 | **Inventory** | InventoryID (PK) | Batch-wise stock tracking with expiry dates |
+| 10 | **Prescription** | PrescriptionID (PK) | Prescription header with diagnosis |
+| 11 | **PrescriptionItem** | PrescriptionItemID (PK) | Individual medicines in prescription (normalized) |
+| 12 | **MedicineDispense** | DispenseID (PK) | Actual dispensing record (separate from prescription) |
+| 13 | **BillPayment** | BillID (PK) | Financial records and payment tracking |
+| 14 | **EmergencyCase** | EmergencyID (PK) | Emergency incident documentation |
 
-**Normalized Structure**:
+---
+
+### Key ER Relationships
+
+#### Core Patient Flow
 ```
-Visit (1) ──< Prescription (0..1)
-                    │
-                    ├──< PrescriptionItem (1..*)
-                    │           │
-                    │           └──> Medicine (1)
-                    │
-                    └──< MedicineDispense (1..*)
-                                │
-                                ├──> Inventory (1)
-                                └──> StaffEmployee (1)
+Member (1) ──HAS_HISTORY──> MedicalHistory (0..1)
+   │
+   ├──BOOKS──> Appointment (M) ──> Doctor (1)
+   │                │
+   │                └──HAS_VISIT──> Visit (1)
+   │
+   └──ATTENDS──> Visit (M) ──CONDUCTS──> Doctor (1)
 ```
 
-**Foreign Keys**:
-- Prescription.VisitID → Visit (CASCADE)
-- PrescriptionItem.PrescriptionID → Prescription (CASCADE)
-- PrescriptionItem.MedicineID → Medicine (RESTRICT)
-- MedicineDispense.InventoryID → Inventory (RESTRICT)
-
-#### 4. Inventory Management
-
-**Key Relationship**:
+#### Prescription & Dispensing Flow
 ```
-Medicine (1) ──< Inventory (N) ──> MedicalSupplier (1)
+Visit (1) ──GENERATES──> Prescription (0..1)
+                             │
+                             └──contains──> PrescriptionItem (1..*)
+                                                 │
+                                                 ├──references──> Medicine (1)
+                                                 │
+                                                 └──dispensed_as──> MedicineDispense (1..*)
+                                                                         │
+                                                                         ├──uses──> Inventory (1)
+                                                                         └──by──> StaffEmployee (1)
 ```
 
-**Inventory Attributes** (NOT in Medicine):
-- <u>InventoryID</u>
-- BatchNumber (UNIQUE per medicine)
-- Quantity (stock level)
-- ManufactureDate, ExpiryDate
-- ReorderLevel, MinimumStock
-- Location (storage location)
+#### Inventory Management Flow
+```
+Medicine (1) ──STOCK_OF──> Inventory (M) ──SUPPLIES──> MedicalSupplier (1)
+                               │
+                               └──used_in──> MedicineDispense (M)
+```
 
-#### 5. Emergency & Billing
+#### Emergency Response Flow
+```
+Member (1) ──EMERGENCY_FOR──> EmergencyCase (M)
+                                    │
+                                    ├──HANDLED_BY──> Doctor (0..1)
+                                    ├──ATTENDED_BY──> StaffEmployee (1)
+                                    └──links_to──> Visit (1)
+```
 
-**Emergency Relationships**:
-- EmergencyCase → Member (many-to-one)
-- EmergencyCase → Doctor (many-to-one, optional)
-- EmergencyCase → StaffEmployee (many-to-one)
+#### Financial Flow
+```
+Visit (1) ──BILLED_FOR──> BillPayment (1) ──PROCESSED_BY──> StaffEmployee (1)
+```
 
-**Billing Simplification**:
-- BillPayment → VisitID only
-- Access Member via: Visit.MemberID
-- No redundant foreign keys
+---
+
+### Critical Entity Attributes
+
+#### 1. Member (Patient Registry)
+```
+Member
+├── MemberID (PK)
+├── Name (NOT NULL)
+├── Age (NOT NULL)
+├── Email (U) (NOT NULL) - Unique constraint
+├── ContactNumber (NOT NULL)
+├── BloodGroup (NOT NULL)
+├── EmergencyContact (NOT NULL) 
+├── Department
+├── MemberType - Student/Faculty/Staff
+└── Status
+```
+
+#### 2. Doctor
+```
+Doctor
+├── DoctorID (PK) 
+├── Name (NOT NULL)
+├── Specialization (NOT NULL)
+├── LicenseNumber (U) (NOT NULL) - Unique, verified
+├── Email (U) (NOT NULL)
+├── AvailableFrom 
+├── AvailableTo 
+├── WorkingDays
+└── Status
+```
+
+#### 3. Medicine (Master Catalog - NO STOCK!)
+```
+Medicine
+├── MedicineID (PK) 
+├── Name (NOT NULL)
+├── GenericName
+├── Category (NOT NULL)
+├── Form - Tablet/Syrup/Injection
+├── UnitPrice (NOT NULL)
+└── RequiresPrescription
+
+❌ NO StockQuantity (moved to Inventory)
+❌ NO ExpiryDate (moved to Inventory)
+❌ NO ReorderLevel (moved to Inventory)
+```
+
+#### 4. Inventory (Batch-Specific Stock) 
+```
+Inventory
+├── InventoryID (PK) 
+├── MedicineID (FK) → Medicine
+├── BatchNumber (NOT NULL, UNIQUE per medicine)
+├── Quantity (NOT NULL) 
+├── ManufactureDate
+├── ExpiryDate (NOT NULL) 
+├── Location (NOT NULL) - Storage location
+├── SupplierID (FK) → MedicalSupplier
+├── ReorderLevel (NOT NULL) 
+├── MinimumStock (NOT NULL)
+└── Status
+```
+
+**Why Separate Medicine and Inventory?**
+- One medicine can have **multiple batches** with different expiry dates
+- Enables **FEFO** (First Expiry First Out) dispensing
+- Proper **3NF compliance** (no transitive dependencies)
+
+#### 5. Prescription vs PrescriptionItem 
+```
+Prescription (Header)
+├── PrescriptionID (PK)
+├── VisitID (FK) → Visit
+├── MemberID (FK) → Member
+├── DoctorID (FK) → Doctor
+├── IssueDate (NOT NULL)
+├── ValidUntil (NOT NULL)
+├── Diagnosis (NOT NULL)
+└── Status
+
+PrescriptionItem (Detail - Normalized!)
+├── PrescriptionItemID (PK)
+├── PrescriptionID (FK) → Prescription (CASCADE)
+├── MedicineID (FK) → Medicine (RESTRICT)
+├── Dosage (NOT NULL) - "1 tablet", "5ml"
+├── Frequency (NOT NULL) - "Every 6 hours"
+├── Duration (NOT NULL) - "5 days"
+└── Quantity (NOT NULL)
+```
+
+**Why Split?**
+- Allows **unlimited medicines** per prescription
+- Complies with **1NF** (no repeating groups)
+- Real prescriptions have 2-5 medicines typically
+
+#### 6. MedicineDispense (Separation from Prescription) 
+```
+MedicineDispense
+├── DispenseID (PK) 
+├── PrescriptionID (FK)
+├── PrescriptionItemID (FK)
+├── MedicineID (FK)
+├── InventoryID (FK) → Tracks which batch used! 
+├── QuantityDispensed (NOT NULL)
+├── DispensedBy (FK) → StaffEmployee - Audit trail
+├── DispenseDate (NOT NULL)
+├── DispenseTime (NOT NULL)
+├── BatchNumber - For traceability
+├── UnitPrice (NOT NULL)
+└── TotalPrice (NOT NULL)
+```
+
+**Why Separate from Prescription?**
+- Prescription = **what doctor ordered**
+- MedicineDispense = **what pharmacist actually gave**
+- Batch tracking for recalls
+- Partial dispensing support (stock shortages)
+
+#### 7. EmergencyCase (Comprehensive Tracking)
+```
+EmergencyCase
+├── EmergencyID (PK)
+├── MemberID (FK) → Member (CASCADE)
+├── DoctorID (FK) → Doctor (0..1, optional)
+├── AttendingStaffID (FK) → StaffEmployee
+├── VisitID (FK) → Visit
+├── IncidentDateTime (NOT NULL)
+├── Location (NOT NULL)
+├── Severity (NOT NULL) - Critical/High/Moderate/Low
+├── Symptoms (NOT NULL)
+├── VitalSignsAtArrival (JSON)
+├── FirstAidGiven
+├── ActionTaken (NOT NULL)
+├── MedicationAdministered
+├── Outcome (NOT NULL)
+├── ReferredToHospital
+├── AmbulanceUsed
+├── AmbulanceArrivalTime
+├── ResolvedDateTime
+└── Status
+```
+
+---
+
+### Relationship Cardinalities Explained
+
+| Relationship | Cardinality | Foreign Key Location | DELETE Rule |
+|-------------|-------------|---------------------|-------------|
+| Member → MedicalHistory | 1:1 | MedicalHistory.MemberID (FK) | CASCADE |
+| Member → Appointment | 1:M | Appointment.MemberID (FK) | CASCADE |
+| Doctor → Appointment | 1:M | Appointment.DoctorID (FK) | RESTRICT |
+| Appointment → Visit | 0..1:1 | Visit.AppointmentID (FK, nullable) | SET NULL |
+| Visit → Prescription | 1:M | Prescription.VisitID (FK) | CASCADE |
+| Prescription → PrescriptionItem | 1:M | PrescriptionItem.PrescriptionID (FK) | CASCADE |
+| PrescriptionItem → MedicineDispense | 1:M | MedicineDispense.PrescriptionItemID (FK) | RESTRICT |
+| Medicine → Inventory | 1:M | Inventory.MedicineID (FK) | RESTRICT |
+| Inventory → MedicineDispense | M:1 | MedicineDispense.InventoryID (FK) | RESTRICT |
+| Visit → BillPayment | 1:1 | BillPayment.VisitID (FK) | CASCADE |
+| Member → EmergencyCase | 1:M | EmergencyCase.MemberID (FK) | CASCADE |
+
 
 ---
 
