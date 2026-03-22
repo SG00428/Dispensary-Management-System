@@ -1,0 +1,29 @@
+# Dispensary Management System — Dependency Reference
+# To install all dependencies, run:
+#   cd app
+#   npm install
+# ─────────────────────────────────────────────────────
+
+# ── Runtime Dependencies ──────────────────────────────────────────────────────
+
+# Web framework
+express@4.21.2
+
+# MySQL client for Node.js (connection pooling)
+mysql2@3.12.0
+
+# Password hashing
+bcrypt@5.1.1
+
+# JSON Web Token authentication
+jsonwebtoken@9.0.2
+
+# Environment variable management
+dotenv@16.4.7
+
+# ── System Requirements ───────────────────────────────────────────────────────
+
+# Node.js >= 18.0.0
+# npm    >= 8.0.0
+# MySQL  >= 8.0.0
+
