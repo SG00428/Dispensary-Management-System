@@ -1,0 +1,1 @@
+{"name": "medicines", "index_key": "medicine_id", "order": 4, "tree": {"order": 4, "root": {"leaf": true, "keys": [5], "values": [{"medicine_id": 5, "name": "Atorvastatin", "stock": 39, "price": 120, "category": "Statin"}]}}}

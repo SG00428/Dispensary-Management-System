@@ -1,0 +1,36 @@
+{"txn_id": 19, "op": "BEGIN"}
+{"txn_id": 19, "op": "INSERT", "table": "medicines", "key": 1, "value": {"medicine_id": 1, "name": "Med1", "stock": 20, "price": 10, "category": "X"}}
+{"txn_id": 19, "op": "COMMIT"}
+{"txn_id": 20, "op": "BEGIN"}
+{"txn_id": 20, "op": "INSERT", "table": "medicines", "key": 2, "value": {"medicine_id": 2, "name": "Med2", "stock": 20, "price": 20, "category": "X"}}
+{"txn_id": 20, "op": "COMMIT"}
+{"txn_id": 21, "op": "BEGIN"}
+{"txn_id": 21, "op": "INSERT", "table": "medicines", "key": 3, "value": {"medicine_id": 3, "name": "Med3", "stock": 20, "price": 30, "category": "X"}}
+{"txn_id": 21, "op": "COMMIT"}
+{"txn_id": 22, "op": "BEGIN"}
+{"txn_id": 22, "op": "INSERT", "table": "medicines", "key": 4, "value": {"medicine_id": 4, "name": "Med4", "stock": 20, "price": 40, "category": "X"}}
+{"txn_id": 22, "op": "COMMIT"}
+{"txn_id": 23, "op": "BEGIN"}
+{"txn_id": 23, "op": "INSERT", "table": "medicines", "key": 5, "value": {"medicine_id": 5, "name": "Med5", "stock": 20, "price": 50, "category": "X"}}
+{"txn_id": 23, "op": "COMMIT"}
+{"txn_id": 24, "op": "BEGIN"}
+{"txn_id": 24, "op": "INSERT", "table": "medicines", "key": 6, "value": {"medicine_id": 6, "name": "Med6", "stock": 20, "price": 60, "category": "X"}}
+{"txn_id": 24, "op": "COMMIT"}
+{"txn_id": 25, "op": "BEGIN"}
+{"txn_id": 25, "op": "INSERT", "table": "patients", "key": 10, "value": {"patient_id": 10, "name": "P10", "age": 30}}
+{"txn_id": 25, "op": "ROLLBACK"}
+{"txn_id": 26, "op": "BEGIN"}
+{"txn_id": 26, "op": "INSERT", "table": "patients", "key": 11, "value": {"patient_id": 11, "name": "P11", "age": 30}}
+{"txn_id": 26, "op": "ROLLBACK"}
+{"txn_id": 27, "op": "BEGIN"}
+{"txn_id": 27, "op": "INSERT", "table": "patients", "key": 12, "value": {"patient_id": 12, "name": "P12", "age": 30}}
+{"txn_id": 27, "op": "ROLLBACK"}
+{"txn_id": 28, "op": "BEGIN"}
+{"txn_id": 28, "op": "INSERT", "table": "patients", "key": 13, "value": {"patient_id": 13, "name": "P13", "age": 30}}
+{"txn_id": 28, "op": "ROLLBACK"}
+{"txn_id": 29, "op": "BEGIN"}
+{"txn_id": 29, "op": "INSERT", "table": "patients", "key": 14, "value": {"patient_id": 14, "name": "P14", "age": 30}}
+{"txn_id": 29, "op": "ROLLBACK"}
+{"txn_id": 30, "op": "BEGIN"}
+{"txn_id": 30, "op": "INSERT", "table": "patients", "key": 15, "value": {"patient_id": 15, "name": "P15", "age": 30}}
+{"txn_id": 30, "op": "ROLLBACK"}

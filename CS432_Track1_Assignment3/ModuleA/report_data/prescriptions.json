@@ -1,0 +1,1 @@
+{"name": "prescriptions", "index_key": "prescription_id", "order": 4, "tree": {"order": 4, "root": {"leaf": true, "keys": [401], "values": [{"prescription_id": 401, "patient_id": 5, "medicine_id": 5, "quantity": 1, "amount": 120, "date": "2026-04-04"}]}}}

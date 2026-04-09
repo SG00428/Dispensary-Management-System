@@ -1,0 +1,1 @@
+{"name": "medicines", "index_key": "medicine_id", "order": 4, "tree": {"order": 4, "root": {"leaf": true, "keys": [4], "values": [{"medicine_id": 4, "name": "Metformin", "stock": 200, "price": 5, "category": "Antidiabetic"}]}}}

@@ -1,0 +1,9 @@
+{"txn_id": 10, "op": "BEGIN"}
+{"txn_id": 10, "op": "INSERT", "table": "medicines", "key": 5, "value": {"medicine_id": 5, "name": "Atorvastatin", "stock": 40, "price": 120, "category": "Statin"}}
+{"txn_id": 10, "op": "INSERT", "table": "patients", "key": 5, "value": {"patient_id": 5, "name": "Meera Joshi", "age": 60, "balance": 500, "city": "Vadodara"}}
+{"txn_id": 10, "op": "COMMIT"}
+{"txn_id": 11, "op": "BEGIN"}
+{"txn_id": 11, "op": "UPDATE", "table": "medicines", "key": 5, "value": {"medicine_id": 5, "name": "Atorvastatin", "stock": 39, "price": 120, "category": "Statin"}, "old_value": {"medicine_id": 5, "name": "Atorvastatin", "stock": 40, "price": 120, "category": "Statin"}}
+{"txn_id": 11, "op": "UPDATE", "table": "patients", "key": 5, "value": {"patient_id": 5, "name": "Meera Joshi", "age": 60, "balance": 380, "city": "Vadodara"}, "old_value": {"patient_id": 5, "name": "Meera Joshi", "age": 60, "balance": 500, "city": "Vadodara"}}
+{"txn_id": 11, "op": "INSERT", "table": "prescriptions", "key": 401, "value": {"prescription_id": 401, "patient_id": 5, "medicine_id": 5, "quantity": 1, "amount": 120, "date": "2026-04-04"}}
+{"txn_id": 11, "op": "COMMIT"}

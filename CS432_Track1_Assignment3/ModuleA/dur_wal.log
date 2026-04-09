@@ -1,0 +1,5 @@
+{"txn_id": 9, "op": "BEGIN"}
+{"txn_id": 9, "op": "INSERT", "table": "medicines", "key": 4, "value": {"medicine_id": 4, "name": "Metformin", "stock": 200, "price": 5, "category": "Antidiabetic"}}
+{"txn_id": 9, "op": "INSERT", "table": "patients", "key": 4, "value": {"patient_id": 4, "name": "Anil Gupta", "age": 55, "contact": "9090909090", "city": "Gandhinagar"}}
+{"txn_id": 9, "op": "INSERT", "table": "prescriptions", "key": 301, "value": {"prescription_id": 301, "patient_id": 4, "medicine_id": 4, "quantity": 2, "amount": 10, "date": "2026-04-04"}}
+{"txn_id": 9, "op": "COMMIT"}

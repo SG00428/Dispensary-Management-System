@@ -1,0 +1,21 @@
+{"txn_id": 12, "op": "BEGIN"}
+{"txn_id": 12, "op": "INSERT", "table": "medicines", "key": 1, "value": {"medicine_id": 1, "name": "Med1", "stock": 10, "price": 5, "category": "X"}}
+{"txn_id": 12, "op": "COMMIT"}
+{"txn_id": 13, "op": "BEGIN"}
+{"txn_id": 13, "op": "INSERT", "table": "medicines", "key": 2, "value": {"medicine_id": 2, "name": "Med2", "stock": 10, "price": 10, "category": "X"}}
+{"txn_id": 13, "op": "COMMIT"}
+{"txn_id": 14, "op": "BEGIN"}
+{"txn_id": 14, "op": "INSERT", "table": "medicines", "key": 3, "value": {"medicine_id": 3, "name": "Med3", "stock": 10, "price": 15, "category": "X"}}
+{"txn_id": 14, "op": "COMMIT"}
+{"txn_id": 15, "op": "BEGIN"}
+{"txn_id": 15, "op": "INSERT", "table": "medicines", "key": 4, "value": {"medicine_id": 4, "name": "Med4", "stock": 10, "price": 20, "category": "X"}}
+{"txn_id": 15, "op": "COMMIT"}
+{"txn_id": 16, "op": "BEGIN"}
+{"txn_id": 16, "op": "INSERT", "table": "medicines", "key": 5, "value": {"medicine_id": 5, "name": "Med5", "stock": 10, "price": 25, "category": "X"}}
+{"txn_id": 16, "op": "COMMIT"}
+{"txn_id": 17, "op": "BEGIN"}
+{"txn_id": 17, "op": "INSERT", "table": "medicines", "key": 6, "value": {"medicine_id": 6, "name": "Med6", "stock": 10, "price": 30, "category": "X"}}
+{"txn_id": 17, "op": "COMMIT"}
+{"txn_id": 18, "op": "BEGIN"}
+{"txn_id": 18, "op": "INSERT", "table": "medicines", "key": 7, "value": {"medicine_id": 7, "name": "Med7", "stock": 10, "price": 35, "category": "X"}}
+{"txn_id": 18, "op": "COMMIT"}

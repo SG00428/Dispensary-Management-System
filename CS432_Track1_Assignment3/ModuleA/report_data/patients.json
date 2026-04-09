@@ -1,0 +1,1 @@
+{"name": "patients", "index_key": "patient_id", "order": 4, "tree": {"order": 4, "root": {"leaf": true, "keys": [5], "values": [{"patient_id": 5, "name": "Meera Joshi", "age": 60, "balance": 380, "city": "Vadodara"}]}}}
